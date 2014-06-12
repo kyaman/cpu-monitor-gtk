@@ -11,7 +11,7 @@ static double **_fifo = NULL;
 static int _fifo_count = -1;
 static int _fifo_size = -1;
 
-void fifoEx_init(int count, int size)
+void fifo_init(int count, int size)
 {
 	int i, j;
 
@@ -28,7 +28,7 @@ void fifoEx_init(int count, int size)
 	}
 }
 
-void fifoEx_finalize()
+void fifo_finalize()
 {
 	int i;
 
@@ -46,7 +46,7 @@ void fifoEx_finalize()
 	_fifo_count = -1;
 }
 
-void fifoEx_add(int fifoId, double new_data)
+void fifo_add(int fifoId, double new_data)
 {
 	int i;
 
@@ -65,7 +65,7 @@ void fifoEx_add(int fifoId, double new_data)
 
 }
 
-void fifoEx_get(int fifoId, double **fifo, int *size)
+void fifo_get(int fifoId, double **fifo, int *size)
 {
 	if(_fifo_size < 0)
 		return;
@@ -74,7 +74,7 @@ void fifoEx_get(int fifoId, double **fifo, int *size)
 	*size = _fifo_size;
 }
 
-double fifoEx_getByIndex(int fifoId, int index)
+double fifo_getByIndex(int fifoId, int index)
 {
 	return _fifo[fifoId][index];
 }

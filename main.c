@@ -9,7 +9,7 @@
 #include <glibtop.h>
 #include <glibtop/cpu.h>
 
-#include "fifoEx.h"
+#include "fifo.h"
 
 typedef struct widgetCpu
 {
@@ -63,7 +63,7 @@ gboolean cb_timer_event (gpointer event_arg)
 	sprintf(buffer, "%05.1f [%%]", usage_percent);
 	gtk_label_set_text(GTK_LABEL(widget[0]), buffer);
 
-	fifoEx_add(0, usage_percent);
+	fifo_add(0, usage_percent);
 
 	// each
 	for(i=0; i<g_iCpuCount; i++)
@@ -77,7 +77,7 @@ gboolean cb_timer_event (gpointer event_arg)
 			sprintf(buffer, "%05.1f [%%]", usage_percent);
 			gtk_label_set_text(GTK_LABEL(widget[i+1]), buffer);
 
-			fifoEx_add(i+1, usage_percent);
+			fifo_add(i+1, usage_percent);
 		}
 	}
 
@@ -133,7 +133,7 @@ cb_expose_event (GtkWidget			*widget,
 	double *data_array;
 	int data_array_size;
 	const float max_value = 100;
-	fifoEx_get(fifoId, &data_array, &data_array_size);
+	fifo_get(fifoId, &data_array, &data_array_size);
 
 	double graph_width_step = (double)widget->allocation.width / ((double)data_array_size - 1);
 	double graph_x_prev = 0;
@@ -185,7 +185,7 @@ int main(int argc, char **argv)
 	g_iCpuCount = get_cpu_count();
 
 	// fifo for cpus
-	fifoEx_init(g_iCpuCount+1, SECOND * RESOLUTION);
+	fifo_init(g_iCpuCount+1, SECOND * RESOLUTION);
 
 	// window
 	window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
@@ -224,7 +224,7 @@ int main(int argc, char **argv)
 
 	gtk_widget_show_all (window);
 	gtk_main ();
-	fifoEx_finalize();
+	fifo_finalize();
 
 	return 0;
 }
