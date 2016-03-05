@@ -46,7 +46,7 @@ gboolean cb_timer_event (gpointer event_arg)
 
 	GtkWidget **widget = widgetCpu->label;
 	float total, idle, usage, usage_percent;
-	char buffer[100];
+	char buffer[10];
 	int i;
 
 	cpu_prev = cpu_current;
@@ -60,7 +60,7 @@ gboolean cb_timer_event (gpointer event_arg)
 	idle = (cpu_current.idle - cpu_prev.idle) / total;
 	usage = 1 - idle;
 	usage_percent = usage * 100;
-	sprintf(buffer, "%05.1f [%%]", usage_percent);
+	sprintf(buffer, "%05.1f %%", usage_percent);
 	gtk_label_set_text(GTK_LABEL(widget[0]), buffer);
 
 	fifo_add(0, usage_percent);
@@ -74,7 +74,7 @@ gboolean cb_timer_event (gpointer event_arg)
 			idle = (cpu_current.xcpu_idle[i] - cpu_prev.xcpu_idle[i]) / total;
 			usage = 1 - idle;
 			usage_percent = usage * 100;
-			sprintf(buffer, "%05.1f [%%]", usage_percent);
+			sprintf(buffer, "%05.1f %%", usage_percent);
 			gtk_label_set_text(GTK_LABEL(widget[i+1]), buffer);
 
 			fifo_add(i+1, usage_percent);
@@ -93,9 +93,10 @@ gboolean cb_timer_event (gpointer event_arg)
 }
 
 gboolean
-cb_expose_event (GtkWidget			*widget,
-				 GdkEventExpose		*event,
-				 gpointer 			user_data)
+cb_expose_event (
+	GtkWidget *widget,
+	GdkEventExpose *event,
+	gpointer user_data)
 {
 	GdkWindow *drawable = widget->window;
 	cairo_t *cr;
@@ -111,9 +112,9 @@ cb_expose_event (GtkWidget			*widget,
 	cairo_fill(cr);
 
 	// graph
-	cairo_set_antialias(cr, CAIRO_ANTIALIAS_SUBPIXEL);
-	cairo_set_line_width (cr, 1.0);
+	cairo_set_line_width (cr, 2.0);
 	cairo_set_line_cap (cr, CAIRO_LINE_CAP_ROUND);
+	cairo_set_line_join (cr, CAIRO_LINE_JOIN_ROUND);
 
 	switch(fifoId)
 	{
@@ -206,7 +207,7 @@ int main(int argc, char **argv)
 		else
 			sprintf(name, "CPU%02d", i);
 		hbox_cpu[i] = gtk_hbox_new (FALSE, 0);
-		label_cpu[i] = gtk_label_new("000.0 [%]");
+		label_cpu[i] = gtk_label_new("000.0 %");
 		graph_cpu[i] = gtk_drawing_area_new ();
 		gtk_box_pack_start (GTK_BOX (vbox), hbox_cpu[i], TRUE, TRUE, 0);
 		gtk_box_pack_start (GTK_BOX (hbox_cpu[i]), gtk_label_new(name), FALSE, FALSE, 10);
