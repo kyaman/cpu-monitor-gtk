@@ -1,4 +1,8 @@
-cpu monitor gtk
-=============
+# cpu monitor gtk
 
-cpu monitor for gtk.
+### compile
+
+```bash
+$ cmake .
+$ make
+```
