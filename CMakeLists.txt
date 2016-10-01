@@ -3,9 +3,9 @@ cmake_minimum_required (VERSION 2.6)
 project (cpu_monitor_gtk)
 add_definitions(-Wall)
 
-find_package(GTK2)
 find_package(PkgConfig)
 
+pkg_check_modules(GTK2 REQUIRED gtk+-2.0)
 pkg_check_modules(LIBGTOP2 REQUIRED libgtop-2.0)
 
 include_directories(
