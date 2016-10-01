@@ -101,7 +101,7 @@ cb_expose_event (
 	GdkWindow *drawable = widget->window;
 	cairo_t *cr;
 	int i;
-	int fifoId = user_data;
+	int fifoId = GPOINTER_TO_INT(user_data);
 
 	//// drawing
 	cr = gdk_cairo_create (drawable);
