@@ -9,7 +9,9 @@
 ## build & run
 
 ```bash
-$ cmake .
+$ mkdir build
+$ cd build
+$ cmake ..
 $ make
 $ ./cpu_monitor_gtk
 ```
