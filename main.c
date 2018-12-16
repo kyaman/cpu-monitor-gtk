@@ -104,7 +104,8 @@ gboolean cb_expose_event(GtkWidget *widget, GdkEventExpose *event,
   cairo_fill(cr);
 
   // graph
-  cairo_set_line_width(cr, 2.0);
+  double graph_line_width = 2.0;
+  cairo_set_line_width(cr, graph_line_width);
   cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND);
   cairo_set_line_join(cr, CAIRO_LINE_JOIN_ROUND);
 
@@ -166,7 +167,7 @@ gboolean cb_expose_event(GtkWidget *widget, GdkEventExpose *event,
   double graph_x_new = 0;
   double graph_y_prev = -1;
   double graph_y_new = -1;
-  double scale = (double)widget->allocation.height / max_value;
+  double scale = (double)widget->allocation.height / (max_value + graph_line_width);
 
   graph_y_new = (max_value - data_array[0]) * scale;
   for (i = 1; i < data_array_size; i++) {
@@ -176,7 +177,7 @@ gboolean cb_expose_event(GtkWidget *widget, GdkEventExpose *event,
 
     // y
     graph_y_prev = graph_y_new;
-    graph_y_new = (max_value - data_array[i]) * scale;
+    graph_y_new = scale + (max_value - data_array[i]) * scale;
 
     // draw
     if (data_array[i] >= 0) {
