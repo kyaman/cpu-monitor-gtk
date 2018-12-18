@@ -11,7 +11,8 @@
 
 #include "fifo.h"
 
-typedef struct widgetCpu {
+typedef struct widgetCpu
+{
   GtkWidget **label;
   GtkWidget **graph;
 } WidgetCpu;
@@ -19,12 +20,14 @@ typedef struct widgetCpu {
 static guint timer_id;
 int g_iCpuCount;
 
-int get_cpu_count() {
+int get_cpu_count()
+{
   glibtop_cpu cpu;
   int count = 0;
 
   glibtop_get_cpu(&cpu);
-  for (int i = 0; i < GLIBTOP_NCPU; i++) {
+  for (int i = 0; i < GLIBTOP_NCPU; i++)
+  {
     if (cpu.xcpu_total[i] > 0)
       count++;
     else
@@ -34,7 +37,8 @@ int get_cpu_count() {
   return count;
 }
 
-gboolean cb_timer_event(gpointer event_arg) {
+gboolean cb_timer_event(gpointer event_arg)
+{
   static glibtop_cpu cpu_prev;
   static glibtop_cpu cpu_current;
 
@@ -61,8 +65,10 @@ gboolean cb_timer_event(gpointer event_arg) {
   fifo_add(0, usage_percent);
 
   // each
-  for (int i = 0; i < g_iCpuCount; i++) {
-    if (cpu_prev.xcpu_total[i] > 0) {
+  for (int i = 0; i < g_iCpuCount; i++)
+  {
+    if (cpu_prev.xcpu_total[i] > 0)
+    {
       total = (cpu_current.xcpu_total[i] - cpu_prev.xcpu_total[i]);
       idle = (cpu_current.xcpu_idle[i] - cpu_prev.xcpu_idle[i]) / total;
       usage = 1 - idle;
@@ -86,7 +92,8 @@ gboolean cb_timer_event(gpointer event_arg) {
 }
 
 gboolean cb_expose_event(GtkWidget *widget, GdkEventExpose *event,
-                         gpointer user_data) {
+                         gpointer user_data)
+{
   GdkWindow *drawable = widget->window;
   cairo_t *cr;
   int fifoId = GPOINTER_TO_INT(user_data);
@@ -106,48 +113,60 @@ gboolean cb_expose_event(GtkWidget *widget, GdkEventExpose *event,
   cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND);
   cairo_set_line_join(cr, CAIRO_LINE_JOIN_ROUND);
 
-  switch (fifoId) {
-  case 0: {
+  switch (fifoId)
+  {
+  case 0:
+  {
     cairo_set_source_rgb(cr, 1.0, 0.0, 0.0);
     break;
   }
-  case 1: {
+  case 1:
+  {
     cairo_set_source_rgb(cr, 0.0, 1.0, 0.0);
     break;
   }
-  case 2: {
+  case 2:
+  {
     cairo_set_source_rgb(cr, 0.0, 0.0, 1.0);
     break;
   }
-  case 3: {
+  case 3:
+  {
     cairo_set_source_rgb(cr, 0.0, 1.0, 1.0);
     break;
   }
-  case 4: {
+  case 4:
+  {
     cairo_set_source_rgb(cr, 1.0, 0.0, 1.0);
     break;
   }
-  case 5: {
+  case 5:
+  {
     cairo_set_source_rgb(cr, 0.5, 0.0, 0.0);
     break;
   }
-  case 6: {
+  case 6:
+  {
     cairo_set_source_rgb(cr, 0.0, 0.5, 0.0);
     break;
   }
-  case 7: {
+  case 7:
+  {
     cairo_set_source_rgb(cr, 0.0, 0.0, 0.5);
     break;
   }
-  case 8: {
+  case 8:
+  {
     cairo_set_source_rgb(cr, 0.5, 0.0, 0.5);
     break;
   }
-  case 9: {
+  case 9:
+  {
     cairo_set_source_rgb(cr, 0.0, 0.5, 0.5);
     break;
   }
-  default: {
+  default:
+  {
     cairo_set_source_rgb(cr, 0.0, 0.0, 0.0);
     break;
   }
@@ -167,7 +186,8 @@ gboolean cb_expose_event(GtkWidget *widget, GdkEventExpose *event,
   double scale = (double)widget->allocation.height / (max_value + graph_line_width);
 
   graph_y_new = (max_value - data_array[0]) * scale;
-  for (int i = 1; i < data_array_size; i++) {
+  for (int i = 1; i < data_array_size; i++)
+  {
     // x
     graph_x_prev = graph_x_new;
     graph_x_new += graph_width_step;
@@ -177,7 +197,8 @@ gboolean cb_expose_event(GtkWidget *widget, GdkEventExpose *event,
     graph_y_new = scale + (max_value - data_array[i]) * scale;
 
     // draw
-    if (data_array[i] >= 0) {
+    if (data_array[i] >= 0)
+    {
       cairo_move_to(cr, graph_x_prev, graph_y_prev);
       cairo_line_to(cr, graph_x_new, graph_y_new);
       cairo_stroke(cr);
@@ -189,7 +210,8 @@ gboolean cb_expose_event(GtkWidget *widget, GdkEventExpose *event,
   return FALSE;
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
   const int SECOND = 60;
   const int RESOLUTION = 2;
 
@@ -222,7 +244,8 @@ int main(int argc, char **argv) {
 
   // cpus
   char name[6];
-  for (int i = 0; i < g_iCpuCount + 1; i++) {
+  for (int i = 0; i < g_iCpuCount + 1; i++)
+  {
     if (i == 0)
       sprintf(name, "TOTAL");
     else

@@ -12,7 +12,8 @@ static double **_fifo = NULL;
 static int _fifo_count = -1;
 static int _fifo_size = -1;
 
-void fifo_init(int count, int size) {
+void fifo_init(int count, int size)
+{
   _fifo = (double **)malloc(sizeof(double) * count);
   _fifo_count = count;
 
@@ -20,17 +21,20 @@ void fifo_init(int count, int size) {
     _fifo[i] = (double *)malloc(sizeof(double) * size);
   _fifo_size = size;
 
-  for (int i = 0; i < count; i++) {
+  for (int i = 0; i < count; i++)
+  {
     for (int j = 0; j < size; j++)
       _fifo[i][j] = -1;
   }
 }
 
-void fifo_finalize() {
+void fifo_finalize()
+{
   if (_fifo == NULL)
     return;
 
-  for (int i = 0; i < _fifo_count; i++) {
+  for (int i = 0; i < _fifo_count; i++)
+  {
     if (_fifo[i] != NULL)
       free(_fifo[i]);
   }
@@ -41,7 +45,8 @@ void fifo_finalize() {
   _fifo_count = -1;
 }
 
-void fifo_add(int fifoId, double new_data) {
+void fifo_add(int fifoId, double new_data)
+{
   if (_fifo_size < 0)
     return;
 
@@ -56,7 +61,8 @@ void fifo_add(int fifoId, double new_data) {
 #endif
 }
 
-void fifo_get(int fifoId, double **fifo, int *size) {
+void fifo_get(int fifoId, double **fifo, int *size)
+{
   if (_fifo_size < 0)
     return;
 
