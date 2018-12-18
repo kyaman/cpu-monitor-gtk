@@ -81,11 +81,10 @@ gboolean cb_timer_event(gpointer event_arg)
   }
 
   // widget redraw
-  gtk_widget_queue_draw(widgetCpu->graph[0]);
-  gtk_widget_queue_draw(widgetCpu->graph[1]);
-  gtk_widget_queue_draw(widgetCpu->graph[2]);
-  gtk_widget_queue_draw(widgetCpu->graph[3]);
-  gtk_widget_queue_draw(widgetCpu->graph[4]);
+  for (int i = 0; i < g_iCpuCount + 1; i++)
+  {
+    gtk_widget_queue_draw(widgetCpu->graph[i]);
+  }
 
   // for continue
   return TRUE;
