@@ -21,11 +21,10 @@ int g_iCpuCount;
 
 int get_cpu_count() {
   glibtop_cpu cpu;
-  int i = 0;
   int count = 0;
 
   glibtop_get_cpu(&cpu);
-  for (i = 0; i < GLIBTOP_NCPU; i++) {
+  for (int i = 0; i < GLIBTOP_NCPU; i++) {
     if (cpu.xcpu_total[i] > 0)
       count++;
     else
@@ -44,7 +43,6 @@ gboolean cb_timer_event(gpointer event_arg) {
   GtkWidget **widget = widgetCpu->label;
   float total, idle, usage, usage_percent;
   char buffer[10];
-  int i;
 
   cpu_prev = cpu_current;
   glibtop_get_cpu(&cpu_current);
@@ -63,7 +61,7 @@ gboolean cb_timer_event(gpointer event_arg) {
   fifo_add(0, usage_percent);
 
   // each
-  for (i = 0; i < g_iCpuCount; i++) {
+  for (int i = 0; i < g_iCpuCount; i++) {
     if (cpu_prev.xcpu_total[i] > 0) {
       total = (cpu_current.xcpu_total[i] - cpu_prev.xcpu_total[i]);
       idle = (cpu_current.xcpu_idle[i] - cpu_prev.xcpu_idle[i]) / total;
@@ -91,7 +89,6 @@ gboolean cb_expose_event(GtkWidget *widget, GdkEventExpose *event,
                          gpointer user_data) {
   GdkWindow *drawable = widget->window;
   cairo_t *cr;
-  int i;
   int fifoId = GPOINTER_TO_INT(user_data);
 
   //// drawing
@@ -170,7 +167,7 @@ gboolean cb_expose_event(GtkWidget *widget, GdkEventExpose *event,
   double scale = (double)widget->allocation.height / (max_value + graph_line_width);
 
   graph_y_new = (max_value - data_array[0]) * scale;
-  for (i = 1; i < data_array_size; i++) {
+  for (int i = 1; i < data_array_size; i++) {
     // x
     graph_x_prev = graph_x_new;
     graph_x_new += graph_width_step;
@@ -201,7 +198,6 @@ int main(int argc, char **argv) {
   GtkWidget *hbox_cpu[256];
   GtkWidget *label_cpu[256];
   GtkWidget *graph_cpu[256];
-  int i;
 
   gtk_init(&argc, &argv);
   glibtop_init();
@@ -226,7 +222,7 @@ int main(int argc, char **argv) {
 
   // cpus
   char name[6];
-  for (i = 0; i < g_iCpuCount + 1; i++) {
+  for (int i = 0; i < g_iCpuCount + 1; i++) {
     if (i == 0)
       sprintf(name, "TOTAL");
     else
