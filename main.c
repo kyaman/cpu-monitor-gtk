@@ -112,63 +112,28 @@ gboolean cb_expose_event(GtkWidget *widget, GdkEventExpose *event,
   cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND);
   cairo_set_line_join(cr, CAIRO_LINE_JOIN_ROUND);
 
-  switch (fifoId)
+  int rgb_index = fifoId % 10;
+  double rgb_value = rgb_index < 5 ? 1.0 : 0.5;
+  switch (rgb_index % 5)
   {
   case 0:
-  {
-    cairo_set_source_rgb(cr, 1.0, 0.0, 0.0);
+    cairo_set_source_rgb(cr, rgb_value, 0.0, 0.0);
     break;
-  }
   case 1:
-  {
-    cairo_set_source_rgb(cr, 0.0, 1.0, 0.0);
+    cairo_set_source_rgb(cr, 0.0, rgb_value, 0.0);
     break;
-  }
   case 2:
-  {
-    cairo_set_source_rgb(cr, 0.0, 0.0, 1.0);
+    cairo_set_source_rgb(cr, 0.0, 0.0, rgb_value);
     break;
-  }
   case 3:
-  {
-    cairo_set_source_rgb(cr, 0.0, 1.0, 1.0);
+    cairo_set_source_rgb(cr, 0.0, rgb_value, rgb_value);
     break;
-  }
   case 4:
-  {
-    cairo_set_source_rgb(cr, 1.0, 0.0, 1.0);
+    cairo_set_source_rgb(cr, rgb_value, 0.0, rgb_value);
     break;
-  }
-  case 5:
-  {
-    cairo_set_source_rgb(cr, 0.5, 0.0, 0.0);
-    break;
-  }
-  case 6:
-  {
-    cairo_set_source_rgb(cr, 0.0, 0.5, 0.0);
-    break;
-  }
-  case 7:
-  {
-    cairo_set_source_rgb(cr, 0.0, 0.0, 0.5);
-    break;
-  }
-  case 8:
-  {
-    cairo_set_source_rgb(cr, 0.5, 0.0, 0.5);
-    break;
-  }
-  case 9:
-  {
-    cairo_set_source_rgb(cr, 0.0, 0.5, 0.5);
-    break;
-  }
   default:
-  {
     cairo_set_source_rgb(cr, 0.0, 0.0, 0.0);
     break;
-  }
   }
 
   double *data_array;
